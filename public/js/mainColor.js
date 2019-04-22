@@ -39,6 +39,9 @@ $(function(){
                 toastr.success('Add success!');
                 $('#modal-add').modal('hide');
                 $('#colors-table').DataTable().ajax.reload();
+
+                $('#name_add').val('');
+                $('#code_add').val('');
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -107,15 +110,21 @@ $(function(){
                 type:'delete',
                 url:'/admin/colors/'+id,
                 success : function(reponse){
-            
-                    $('#colors-table').DataTable().ajax.reload();
+                    if(reponse.error==true){
+                            toastr.error(reponse.message);
+                        }
+                        else{
+                            $('#colors-table').DataTable().ajax.reload();
                     toastr.success('Delete success!');
+                    swal("Poof! Your imaginary file has been deleted!", {
+                    icon: "success",
+                });
+                        }
+                    
             }
 
        })
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+                
             } else {
                 swal("Bạn đã hủy chức năng xóa!");
             }

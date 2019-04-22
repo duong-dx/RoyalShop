@@ -2,16 +2,17 @@
 @section('content')
 
 <div style="font-size: 15px !important;" class="container">
+	@if (Auth::user()->can('crud_branch'))
 	<a style="margin: 5% 0% 2% 0%; " href="javascript:;" class="btn btn-dark btn-add">
 		Add Branch
 	</a>
-	
+	@endif
+	<h4 style="margin: 1% 0% 2% 0%; "> Branches</h4>
 	<div class="table-responsive">
 		<table id="branches-table" class="table table-hover">
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Name</th>
 					<th>Address</th>	
 					<th>Mobile</th>
 					<th>Action</th>
@@ -23,6 +24,7 @@
 		</div>
 		
 		{{-- modal add  --}}
+		@if (Auth::user()->can('crud_branch'))
 		<div class="modal fade" id="modal-add">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -61,6 +63,8 @@
 			</div>
 		</div>
 		</div>
+		@endif
+		@if (Auth::user()->can('crud_branch'))
 		{{-- modal update  --}}
 		<div class="modal fade" id="modal-update">
 			<div class="modal-dialog">
@@ -73,7 +77,7 @@
 							
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Edit category</h4>
+							<h4 class="modal-title">Edit Branch</h4>
 						</div>
 						
 						<div class="modal-body">
@@ -101,8 +105,41 @@
 				</div>
 			</div>
 		</div>
+		@endif
 	</div>
 	</div>
+	@if (Auth::user()->can('show_branch'))
+	<div class="modal fade" id="modal-list_products">
+			<div style="width: 80%;" class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">List Product</h4>
+						</div>
+						
+						<div class="modal-body">
+							<table id="list_products-table" class="table table-hover">
+								<thead>
+									<tr>
+										<th>Product name</th>
+										<th>Memory</th>
+										<th>Color name</th>
+										<th>Price Sale</th>
+										<th>Quantity</th>
+									</tr>
+								</thead>
+								
+								</table>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		@endif
 
 
 @endsection

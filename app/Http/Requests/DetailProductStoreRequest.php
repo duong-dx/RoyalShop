@@ -28,9 +28,9 @@ class DetailProductStoreRequest extends FormRequest
             'color_id'=>['required', 'numeric', 'exists:colors,id'],
             'price'=>'required|numeric',
             'sale_price'=>'required|numeric',
-            'quantity'=>'required|numeric',
+            'quantity'=>'required|numeric|not_in:0|min:0',
             'branch_id'=>['required', 'numeric', 'exists:branches,id'],
-            'memory'=>'required',
+            'memory'=>['required', 'numeric', 'exists:memories,id'],
 
         ];
     }
@@ -52,7 +52,11 @@ class DetailProductStoreRequest extends FormRequest
         'sale_price.numeric'=>'(*) Giá bán sản phẩm phải là số !',
         'quantity.required'=>'(*) Vui lòng nhập vào số lượng !',
         'quantity.numeric'=>'(*) Số lượng phải là số !',
-        'memory.required'=>'(*) Vui lòng nhập vào Dung Lượng !',
+        'quantity.not_in'=>'(*) Số lượng phải lớn hơn 0 !',
+        'quantity.min'=>'(*) Số lượng phải lớn hơn 0 !',
+        'memory.required'=>'(*) Vui lòng chọn vào Dung Lượng !',
+        'memory.numeric'=>'(*) Dung Lượng phải là phải số !',
+        'memory.exists'=>'(*) Dung Lượng không tồn tại !',
         ];
     }
 }

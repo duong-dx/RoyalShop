@@ -13,7 +13,7 @@ class CreateOdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('oders', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->nullable();
             $table->string('customer_name');
@@ -21,8 +21,8 @@ class CreateOdersTable extends Migration
             $table->string('customer_mobile');
             $table->integer('status')->unsigned()->default(0);
             $table->integer('customer_id')->unsigned()->nullable();
+            $table->string('customer_email')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
-            $table->integer('total')->unsigned();
             $table->string('reason_reject')->nullable();// lý do từ chối
             $table->string('coupon_code')->nullable();// mã giảm giá
 
@@ -37,6 +37,6 @@ class CreateOdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('oders');
+        Schema::dropIfExists('orders');
     }
 }

@@ -61,6 +61,16 @@ $(function(){
                 toastr.success('Add success!');
                 $('#modal-add').modal('hide')
                 $('#customers-table').DataTable().ajax.reload();
+
+
+                $('.img-thumbnail').attr('src','http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
+                $('#name_add').val('');
+                $('#birthday_add').val('');
+                $('#address_add').val('');
+                $('#mobile_add').val('');
+                $('#email_add').val('');
+                $('#password_add').val('');
+                $('#thumbnail_add').val('');
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -125,11 +135,12 @@ $(function(){
                 $('#customer_mobile_update').val(reponse.mobile);
                 $('#customer_birthday_update').val(reponse.birthday);
                 $('#customer_address_update').val(reponse.address);
-                if(reponse.thumbnail!=null){
-                    $('#img_thumbnail_update').attr("src","/storage/"+reponse.thumbnail+"");
+                if(reponse.thumbnail==null){
+                    $('#img_thumbnail_update').attr("src","http://ssl.gstatic.com/accounts/ui/avatar_2x.png");
+                    
                 }
                 else{
-                    $('#img_thumbnail_update').attr("src","http://ssl.gstatic.com/accounts/ui/avatar_2x.png");
+                    $('#img_thumbnail_update').attr("src","/storage/"+reponse.thumbnail+"");
                 }
             }
         })

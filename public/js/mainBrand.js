@@ -55,6 +55,13 @@ $(function(){
                 toastr.success('Add success!');
                 $('#brands-table').DataTable().ajax.reload();
                 $('#modal-add').modal('hide');
+
+                $('.img-thumbnail').attr('src','/storage/default_image.png');
+                $('#name_add').val('')
+                $('#slug_add').val('')
+                $('#origin_add').val('')
+                $('#thumbnail_add').val('')
+               
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -156,15 +163,21 @@ $(function(){
                     type:'delete',
                     url:'/admin/brands/'+id,
                     success : function(reponse){
-            
-            $('#brands-table').DataTable().ajax.reload();
-            toastr.success('Delete success!');
+                         if(reponse.error==true){
+                                        toastr.error(reponse.message);
+                                    }
+                        else{
+                                             $('#brands-table').DataTable().ajax.reload();
+                            toastr.success('Delete success!');
+                            swal("Poof! Your imaginary file has been deleted!", {
+                                    icon: "success",
+                                });
+                        }
+           
         }
 
        })
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+                
             } else {
                 swal("Bạn đã hủy chức năng xóa!");
             }

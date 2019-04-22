@@ -3,10 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Color;
+use Auth;
+use App\DetailProduct;
 use Illuminate\Http\Request;
 use App\Http\Requests\ColorRequest;
 class ColorController extends Controller
 {
+    /**
+         * Tác dụng :Khởi tạo
+         *
+         * @param  name space
+         * @param  int   biến chuyền vào
+         * @return \Illuminate\Http\Response trả về gì
+         */
+    public function __construct()
+    {
+         $this->middleware('auth');
+
+        $this->middleware('permission:show_color', ['only' => ['index', 'show']]);
+        
+        $this->middleware('permission:crud_color', ['only' => [ 'edit', 'store', 'update', 'destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -84,16 +101,31 @@ class ColorController extends Controller
      */
     public function destroy($id)
     {
+        $exists = DetailProduct::where('color_id', $id)->first();
+        if($exists!=null){
+            return response()->json([
+                'error'=>true,
+                'message'=>'Không thể xóa vì hiện tại có sản phẩm thuộc danh mục này!',
+            ]);
+        }
         Color::find($id)->delete();
+        return response()->json([
+                'error'=>false,
+                'message'=>'Delete role success !',
+            ]);
     }
     public function getColors()
     {
         $colors= Color::all();
-        return datatables()->of($colors)
-                           ->addColumn('action', function($colors){
-        return '
-        <button type="button" class="btn  btn-warning btn-edit" data-id="'.$colors->id.'"><i class="far fa-edit"></i></button>
-        <button type="button" class="btn btn-danger  btn-delete" data-id="'.$colors->id.'"><i class="far fa-trash-alt"></i></button>';
+        return datatables()->of($colors)->addColumn('action', function($colors){
+           if(Auth::user()->can('crud_color')){ 
+                return '
+                <button type="button" class="btn btn-warning btn-edit" title="Cập nhật thông tin màu sắc" data-id="'.$colors->id.'"><i class="far fa-edit"></i></button>
+                <button title="Xóa màu sắc" type="button" class="btn btn-danger  btn-delete" data-id="'.$colors->id.'"><i class="far fa-trash-alt"></i></button>';
+            }
+            else{
+                return'Bạn không có quyền hạn trên tác vụ này';
+            }
         })
        ->editColumn('code',function($colors){
         return '<div style="width:30px; height:30px; background:'.$colors->code.'; margin:auto;"></div>';

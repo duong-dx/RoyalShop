@@ -2,9 +2,12 @@
 @section('content')
 
 <div style="font-size: 15px !important;" class="container">
+	@if(Auth::user()->can('crud_color'))
 	<a style="margin: 5% 0% 2% 0%; " href="javascript:;" class="btn btn-dark btn-add">
 		Add Color
 	</a>
+	@endif
+	<h4 style="margin: 1% 0% 2% 0%;">Colors</h4>
 	{{-- <button class="btn btn-dark btn-add">Add category</button> --}}
 	<div class="table-responsive">
 		<table style="text-align: center;" class="table table-bordered" id="colors-table">
@@ -23,6 +26,7 @@
 	</div>
 	
 	{{-- modal add  --}}
+	@if(Auth::user()->can('crud_color'))
 		<div class="modal fade" id="modal-add">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -56,7 +60,9 @@
 				</div>
 			</div>
 		</div>
+		@endif
 	{{-- modal update  --}}
+	@if(Auth::user()->can('crud_color'))
 		<div class="modal fade" id="modal-update">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -92,6 +98,7 @@
 				</div>
 			</div>
 		</div>
+		@endif
 </div>
 	
 

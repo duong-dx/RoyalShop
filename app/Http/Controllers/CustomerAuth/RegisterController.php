@@ -100,7 +100,7 @@ class RegisterController extends Controller
     }
     protected function registered(Request $request, $customer)
     {
-         return redirect('/customer/test');
+         return redirect('/');
     }
 
 }

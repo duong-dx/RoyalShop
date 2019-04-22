@@ -1,9 +1,14 @@
 @extends('layouts.master')
 @section('content')
+
 <div style="font-size: 15px !important;" class="container">
+	@if(Auth::user()->can('add_customer'))
 	<a style="margin: 5% 0% 3% 0%; " href="javascript:;" class="btn btn-dark btn-add">
 		Add customer
 	</a>
+
+	@endif
+	<h4  style="margin: 1% 0% 3% 0%; ">Customers</h4>
 	{{-- <button class="btn btn-dark btn-add">Add customer</button> --}}
 	<div class="table-responsive">
 		<table id="customers-table" class="table table-hover">
@@ -19,6 +24,7 @@
 		</table>
 		</div>
 		{{-- Modal show chi tiết customer --}}
+		@if(Auth::user()->can('show_customer'))
 		<div class="modal fade" id="modal-show">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -79,7 +85,9 @@
 				</div>
 			</div>
 		</div>
+		@endif
 		{{-- modal add  --}}
+		@if(Auth::user()->can('add_customer'))
 		<div class="modal fade" id="modal-add">
 			<div style="width: 70%;" class="modal-dialog">
 				<div class="modal-content">
@@ -145,7 +153,9 @@
 				</div>
 			</div>
 		</div>
+		@endif
 		{{-- modal update  --}}
+		@if(Auth::user()->can('update_customer'))
 		<div class="modal fade" id="modal-update">
 			<div style="width: 70%;" class="modal-dialog">
 				<div class="modal-content">
@@ -217,6 +227,7 @@
 				</div>
 			</div>
 		</div>
+		@endif
 	</div>
 
 

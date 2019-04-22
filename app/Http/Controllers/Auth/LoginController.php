@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/users';
+    protected $redirectTo = '/admin/profile';
 
     /**
      * Create a new controller instance.
@@ -38,7 +38,7 @@ class LoginController extends Controller
     }
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login_admin');
     }
      public function logout()
     {

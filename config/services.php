@@ -40,4 +40,10 @@ return [
         ],
     ],
 
+    'facebook' => [
+        'client_id' => '319478915382911',
+        'client_secret' => '3e9b315580a6bb6548b4f9646bd68fd1',
+        'redirect' => 'https://royalshop.local/customer/login/facebook/callback',
+    ],
+
 ];

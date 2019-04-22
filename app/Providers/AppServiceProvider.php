@@ -23,9 +23,12 @@ class AppServiceProvider extends ServiceProvider
         ->select('p.*', 'b.name as brand_name' , 'c.name as category_name')
         ->get();
         $categories = Category::all();
+
         foreach ($products as $key => $value) {
-             $value->thumbnail = DB::table('images')->where('product_id',$value->id)->first()->thumbnail;
+             $value->thumbnail = DB::table('images')->where('product_id',$value->id)->first();
+             
         }
+        
         View::share(['categories'=>$categories, 'products'=>$products]);
     }
 

@@ -76,11 +76,13 @@
 			<div class="wrap-slick2">
 				<div class="slick2">
 				@foreach($products as $product)
+					@if($product->thumbnail!=null)
+					
 					<div class="item-slick2 p-l-15 p-r-15">
 						<!-- Block2 -->
 						<div class="block2">
 							<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
-								<img src="/storage/{{ $product->thumbnail }}" alt="{{ $product->thumbnail }}">
+								<img src="/storage/{{ $product->thumbnail->thumbnail }}" alt="{{ $product->thumbnail->thumbnail }}">
 
 								<div class="block2-overlay trans-0-4">
 									<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
@@ -90,9 +92,9 @@
 
 									<div class="block2-btn-addcart w-size1 trans-0-4">
 										<!-- Button -->
-										<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+										<a href="/product/{{ $product->slug }}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
 											Detail
-										</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -104,6 +106,7 @@
 							</div>
 						</div>
 					</div>
+					@endif
 				@endforeach
 				</div>
 			</div>

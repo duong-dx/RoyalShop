@@ -34,6 +34,12 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('master2/css/util.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('master2/css/main.css') }}">
+	{{-- Toasr css --}}
+
+
+	<link rel="stylesheet" type="text/css" href="{{ asset('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css') }}">
+	{{-- link icons --}}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <!--===============================================================================================-->
 <section>
              @yield('css')
@@ -48,34 +54,43 @@
 		<div class="container-menu-header">
 			<div class="topbar">
 				<div class="topbar-social">
-					<a href="#" class="topbar-social-item fa fa-facebook"></a>
-					<a href="#" class="topbar-social-item fa fa-instagram"></a>
-					<a href="#" class="topbar-social-item fa fa-pinterest-p"></a>
-					<a href="#" class="topbar-social-item fa fa-snapchat-ghost"></a>
-					<a href="#" class="topbar-social-item fa fa-youtube-play"></a>
+					<a href="#"  style="margin: 5%"><i class="fab fa-facebook"></i></a>
+					<a href="#" style="margin: 5%"><i class="fab fa-instagram"></i></a>
+					<a href="#" style="margin: 5%"><i class="fab fa-pinterest"></i></a>
+					<a href="#" style="margin: 5%"><i class="fab fa-snapchat-square"></i></a>
+					<a href="#" style="margin: 5%"><i class="fab fa-youtube-square"></i></a>
 				</div>
 
 				<span class="topbar-child1">
-					Free shipping for standard order over $100
+					<a href="/admin/login">Admin</a>
 				</span>
-
+				@if(isset(Auth::guard('customer')->user()->name))
 				<div class="topbar-child2">
 					<span class="topbar-email">
-						fashe@example.com
+						
+						{{ Auth::guard('customer')->user()->email }}
 					</span>
 
 					<div class="topbar-language rs1-select2">
-						<select class="selection-1" name="time">
-							<option>USD</option>
-							<option>EUR</option>
-						</select>
+						
+                                    <a class="dropdown-item" href="/customer/logout"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="/customer/logout" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                               
 					</div>
 				</div>
+				@endif
 			</div>
 
 			<div class="wrap_header">
 				<!-- Logo -->
-				<a href="index.html" class="logo">
+				<a href="/" class="logo">
 					<img src="{{ asset('master2/images/icons/logo.png') }}" alt="IMG-LOGO">
 				</a>
 
@@ -83,111 +98,82 @@
 				<div class="wrap_menu">
 					<nav class="menu">
 						<ul class="main_menu">
-							@foreach($categories as $category)
-								@if($category->parent_id==0)
-									<li>
-										<a href="{{ $category->slug }}">{{ $category->name }}</a>
-										<ul class="sub_menu">
-											@foreach($categories as $subcategory)
-											@if($subcategory->parent_id==$category->id)
-												<li><a href="{{ $subcategory->slug }}">{{ $subcategory->name }}</a></li>
-												
-											@endif
-											@endforeach
-										</ul>
-									</li>
-								@endif
-							@endforeach
+							<li>
+								<a href="/">Home</a>
+								
+							</li>
 
-							
+							<li>
+								<a href="/product">Product</a>
+							</li>
+
+							<li >
+								Category
+								<ul class="sub_menu">
+									@foreach($categories as $category)
+										<li><a href="/categories/{{ $category->slug }}">{{ $category->name }}</a></li>
+										
+									@endforeach
+								</ul>
+							</li>
+
+							<li>
+								@if(isset(Auth::guard('customer')->user()->name))
+									<a href="/customer/profile/{{ Auth::guard('customer')->user()->id }}" title="Trang cá nhân" class="header-wrapicon1 dis-block">Home</a>
+								@else
+									<a title="Vui lòng đăng nhập để đến trang cá nhân" href="/customer/login" class="header-wrapicon1 dis-block">
+										Home
+									</a>
+								@endif
+							</li>
+
+							<li>
+								<a href="javascript:;">Blog</a>
+							</li>
+
+							<li>
+								<a href="javascript:;">About</a>
+							</li>
+
+							<li>
+								<a href="javascript:;">Contact</a>
+							</li>
 						</ul>
 					</nav>
 				</div>
-
+				
 				<!-- Header Icon -->
 				<div class="header-icons">
-					<a href="#" class="header-wrapicon1 dis-block">
-						<img src="{{ asset('master2/images/icons/icon-header-01.png')}}" class="header-icon1" alt="ICON">
-					</a>
+					
+						@if(isset(Auth::guard('customer')->user()->name))
+						<a href="/customer/profile/{{ Auth::guard('customer')->user()->id }}" title="Trang cá nhân" class="header-wrapicon1 dis-block">
+							@if(Auth::guard('customer')->user()->thumbnail!=null)
+								<img src="/storage/{{ Auth::guard('customer')->user()->thumbnail }}" class="header-icon1" alt="ICON">
+							@else
+								<img src="{{ asset('master2/images/icons/icon-header-01.png')}}" class="header-icon1" alt="ICON">
+							@endif
+						</a>
+						@else
+							<a title="Vui lòng đăng nhập để đến trang cá nhân" href="/customer/login" class="header-wrapicon1 dis-block">
+								<img src="{{ asset('master2/images/icons/icon-header-01.png')}}" class="header-icon1" alt="ICON">
+							</a>
+						@endif
+					
 
 					<span class="linedivide1"></span>
 
 					<div class="header-wrapicon2">
-						<img src="{{asset('master2/images/icons/icon-header-02.png')}}" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						<span class="header-icons-noti">0</span>
+						<a href="/product/saleonline">
+							<img src="{{asset('master2/images/icons/icon-header-02.png')}}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+							<span class="header-icons-noti">
+								<span id="cart-count">
+									
+										{{ Cart::instance('shopping')->count() }}
+								</span>
+							</span>
 
 						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
-							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="{{ asset('master2/images/item-cart-01.jpg')}}" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											White Shirt With Pleat Detail Back
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $19.00
-										</span>
-									</div>
-								</li>
-
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="{{ asset('master2/images/item-cart-02.jpg')}}" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Converse All Star Hi Black Canvas
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $39.00
-										</span>
-									</div>
-								</li>
-
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="{{ asset('master2/images/item-cart-03.jpg')}}" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Nixon Porter Leather Watch In Tan
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $17.00
-										</span>
-									</div>
-								</li>
-							</ul>
-
-							<div class="header-cart-total">
-								Total: $75.00
-							</div>
-
-							<div class="header-cart-buttons">
-								<div class="header-cart-wrapbtn">
-									<!-- Button -->
-									<a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-										View Cart
-									</a>
-								</div>
-
-								<div class="header-cart-wrapbtn">
-									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-										Check Out
-									</a>
-								</div>
-							</div>
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -324,11 +310,11 @@
 
 					<li class="item-topbar-mobile p-l-10">
 						<div class="topbar-social-mobile">
-							<a href="#" class="topbar-social-item fa fa-facebook"></a>
-							<a href="#" class="topbar-social-item fa fa-instagram"></a>
-							<a href="#" class="topbar-social-item fa fa-pinterest-p"></a>
-							<a href="#" class="topbar-social-item fa fa-snapchat-ghost"></a>
-							<a href="#" class="topbar-social-item fa fa-youtube-play"></a>
+							<a href="#" ><i class="fab fa-facebook"></i></a>
+							<a href="#" ><i class="fab fa-instagram"></i></a>
+							<a href="#" ><i class="fab fa-pinterest"></i></a>
+							<a href="#" ><i class="fab fa-snapchat-square"></i></a>
+							<a href="#" ><i class="fab fa-youtube-square"></i></a>
 						</div>
 					</li>
 
@@ -604,7 +590,11 @@
 	<script type="text/javascript">
 		$(".selection-1").select2({
 			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect1')
+			
+		});
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			
 		});
 	</script>
 <!--===============================================================================================-->
@@ -617,12 +607,12 @@
 <!--===============================================================================================-->
 	<script type="text/javascript" src="{{ asset('master2/vendor/sweetalert/sweetalert.min.js')}}"></script>
 	<script type="text/javascript">
-		$('.block2-btn-addcart').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
-			});
-		});
+		// $('.block2-btn-addcart').each(function(){
+		// 	var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+		// 	$(this).on('click', function(){
+		// 		swal(nameProduct, "is added to cart !", "success");
+		// 	});
+		// });
 
 		$('.block2-btn-addwishlist').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
@@ -630,10 +620,13 @@
 				swal(nameProduct, "is added to wishlist !", "success");
 			});
 		});
+
+			
 	</script>
 
 <!--===============================================================================================-->
 	<script src="{{ asset('master2/js/main.js')}}"></script>
+	<script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js')}}"></script>
 	<section>
              @yield('js')
     </section>

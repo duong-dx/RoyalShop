@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/customer/test';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -38,7 +38,7 @@ class LoginController extends Controller
     }
     public function showLoginForm()
     {
-        return view('customer_auth.login');
+        return view('customer_auth.login_customer');
     }
    
     public function logout()
@@ -47,7 +47,7 @@ class LoginController extends Controller
 
         // $request->session()->invalidate();
 
-        return redirect('/customer/login');
+        return redirect('/');
     }
 
     protected function guard()
@@ -56,6 +56,6 @@ class LoginController extends Controller
     }
      protected function authenticated()
     {
-        return redirect('/customer/test');
+        return redirect('/');
     }
 }

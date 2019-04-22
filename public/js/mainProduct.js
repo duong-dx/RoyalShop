@@ -57,6 +57,10 @@ $(function(){
               type:'get',
               url:'/admin/products/'+id,
               success :function(reponse){
+
+                 // $('#list_images').child.remove();
+                 // $('#list_images').child().remove();
+
                 $('#list_images').children().remove();
                 if(reponse.images!=null){
                       jQuery.each(reponse.images,function(key,value){
@@ -187,6 +191,19 @@ $(function(){
                toastr.success('Add success!');
                 $('#modal-add').modal('hide');
                 $('#products-table').DataTable().ajax.reload(); 
+
+
+                $('#name_add').val('')
+                $('#slug_add').val('')
+                $('#code_add').val('')
+                $('#warranty_time_add').val('')
+                $('#ram_add').val('')
+                $('#weight_add').val('')
+                $('#screen_size_add').val('')
+                $('#pin_add').val('')
+                $('#front_camera_add').val('')
+                $('#rear_camera_add').val('')
+                $('#operating_system_add').val('')
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -230,7 +247,7 @@ $(function(){
                 $('#name_update').val(reponse.name);
                 $('#slug_update').val(reponse.slug);
                 $('#code_update').val(reponse.code);
-                $('#user_id_update > option[value="'+reponse.user_id+'"]').attr("selected", "selected");
+                $('#user_id_update').val(reponse.user_id);
                 $('#category_id_update > option[value="'+reponse.category_id+'"]').attr("selected", "selected");
                 $('#brand_id_update > option[value="'+reponse.brand_id+'"]').attr("selected", "selected");
                 $('#warranty_time_update').val(reponse.warranty_time);
@@ -300,15 +317,21 @@ $(function(){
                 type:'delete',
                 url:'/admin/products/'+id,
                 success : function(reponse){
-            
-                    $('#products-table').DataTable().ajax.reload();
-                    toastr.success('Delete success!');
+                    if(reponse.error==true){
+                        toastr.error(reponse.message);
+                    }
+                    else{
+                         $('#products-table').DataTable().ajax.reload();
+                        toastr.success('Delete success!');
+                        swal("Poof! Your imaginary file has been deleted!", {
+                        icon: "success",
+                         });
+                    }
+                   
             }
 
        })
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+               
             } else {
                 swal("Bạn đã hủy chức năng xóa!");
             }
@@ -406,6 +429,12 @@ $('#close-detail-product-add').on('click',function(){
                 toastr.success('Add detail products success !');
                 $('#detail_products-table').DataTable().ajax.reload();
                 $('#modal-detail_products').modal('show');
+
+
+                $('#price_add').val('');
+                $('#price_sale_add').val('');
+                $('#quantity_add').val('');
+                
             },
             error:function(jq,status,throwE){
                 jQuery.each(jq.responseJSON.errors,function(key,value){
@@ -589,6 +618,11 @@ $(document).on('click','.btn-reviews',function(){
                 $('#reviews-table').DataTable().ajax.reload();
                  toastr.success("Add review success !");
                   $('#modal-reviews').modal('show');
+
+                  $('.img-thumbnail').attr('src','/storage/default_image.png');
+                  $('#description_add').val('')
+                  $('#content_add').val('')
+                  $('#thumbnail_add').val('')
             
             },
             error: function(jq, status , throwE){

@@ -15,9 +15,12 @@
 @section('content')
 
 <div style="font-size: 15px !important;" class="container">
+	@if(Auth::user()->can('add_product'))
 	<a style="margin: 5% 0% 2% 0%; " href="javascript:;" class="btn btn-dark btn-add">
 		Add product
 	</a>
+	@endif
+	<h4 style="margin: 1% 0% 2% 0%; ">Product</h4>
 	
 	<div class="table-responsive">
 		<table style="text-align: center;" class="table table-bordered" id="products-table">
@@ -33,41 +36,9 @@
 		</table>
 		<div class="clear"></div>
 	</div>
-	{{-- Modal show chi tiết category --}}
-	<div  class="modal fade" id="modal-product_details">
-		<div style="width: 80%;" class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Show category</h4>
-				</div>
-				<div class="modal-body" >
-
-					<div style="width:90%;font-size: 15px;   margin: 3% auto 3%;">
-
-						<table style="width:100%; margin: 1% auto 3%; " id="option_values" class="table">
-							<thead >
-								<tr>
-									<th>Id</th>
-									<th>Option Name</th>
-									<th>Code</th>
-									<th>Value</th>
-
-								</tr>
-							</thead>	
-						</table>
-
-					</div>
-
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	{{-- modal add  --}}
+	@if(Auth::user()->can('add_product'))
 	<div class="modal fade" id="modal-add">
 		<div style="width: 80%;" class="modal-dialog">
 			<div class="modal-content">
@@ -99,17 +70,12 @@
 								<input type="text" class="form-control" id="code_add"  name ="code" placeholder="Code">
 								<span id="span_code_add"></span>
 							</div>
-							<div class="form-group">
-								<label for="">* User </label>
+							
 								
-								<select class="form-control" id="user_id_add"  name ="user_id">
-									@foreach($users as $user)
-									<option value="{{ $user->id }}">{{ $user->name }}</option>
-									@endforeach
-								</select>
+								<input type="hidden" readonly class="form-control" value="{{ Auth::user()->id }}" id="user_id_add"  name ="user_id">
+									
 								
-								<span id="span_user_id_add"></span>
-							</div>
+								
 							<div class="form-group">
 								<label for="">* Category </label>
 								
@@ -189,134 +155,133 @@
 			</div>
 		</div>
 	</div>
+	@endif
 	{{-- modal update  --}}
-	<div class="modal fade" id="modal-update">
-		<div style="width: 80%;" class="modal-dialog">
-			<div class="modal-content">
+	@if(Auth::user()->can('update_product'))
+		<div class="modal fade" id="modal-update">
+			<div style="width: 80%;" class="modal-dialog">
+				<div class="modal-content">
 
-				<form action="" id="form-update" method="category" role="form">
-					@csrf
-					<input type="hidden" id="put" name="_method" value="put">
-					<input type="hidden" readonly name="id" id="id_update">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Edit Product</h4>
-					</div>
-					
-					<div class="modal-body">
+					<form action="" id="form-update" method="category" role="form">
+						@csrf
+						<input type="hidden" id="put" name="_method" value="put">
+						<input type="hidden" readonly name="id" id="id_update">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Edit Product</h4>
+						</div>
+						
+						<div class="modal-body">
 
-							<div style="float: left; width:49%; margin:auto; ">
-								<h4 style="margin-bottom: 5%;">Thông tin :</h4>
-								<div class="form-group">
-									<label for="">* Name</label>
-									<input type="text" class="form-control" id="name_update"  name ="name" placeholder="Name">
-									<span id="span_name_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Slug</label>
-									<input type="text" class="form-control" id="slug_update"  name ="slug" placeholder="Slug">
-									<span id="span_slug_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Code</label>
-									<input type="text" class="form-control" id="code_update"  name ="code" placeholder="Code">
-									<span id="span_code_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* User </label>
+								<div style="float: left; width:49%; margin:auto; ">
+									<h4 style="margin-bottom: 5%;">Thông tin :</h4>
+									<div class="form-group">
+										<label for="">* Name</label>
+										<input type="text" class="form-control" id="name_update"  name ="name" placeholder="Name">
+										<span id="span_name_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Slug</label>
+										<input type="text" class="form-control" id="slug_update"  name ="slug" placeholder="Slug">
+										<span id="span_slug_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Code</label>
+										<input type="text" class="form-control" id="code_update"  name ="code" placeholder="Code">
+										<span id="span_code_update"></span>
+									</div>
 									
-									<select class="form-control" id="user_id_update"  name ="user_id">
-										@foreach($users as $user)
-										<option value="{{ $user->id }}">{{ $user->name }}</option>
-										@endforeach
-									</select>
+										
+										<input type="hidden" readonly class="form-control" id="user_id_update"  name ="user_id">
+											
+										
+										
+									<div class="form-group">
+										<label for="">* Category </label>
+										
+										<select class="form-control" id="category_id_update"  name ="category_id">
+											@foreach($categories as $category)
+											<option value="{{ $category->id }}">{{ $category->name }}</option>
+											@endforeach
+										</select>
+										
+										<span id="span_category_id_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Brand </label>
+										
+										<select class="form-control" id="brand_id_update"  name ="brand_id">
+											@foreach($brands as $brand)
+											<option value="{{ $brand->id }}">{{ $brand->name }}</option>
+											@endforeach
+										</select>
+										
+										<span id="span_brand_id_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Warranty Time (Month)</label>
+										<input type="text" class="form-control" id="warranty_time_update"  name ="warranty_time" placeholder="Warranty Time">
+										<span id="span_warranty_time_update"></span>
+									</div>
 									
-									<span id="span_user_id_update"></span>
 								</div>
-								<div class="form-group">
-									<label for="">* Category </label>
-									
-									<select class="form-control" id="category_id_update"  name ="category_id">
-										@foreach($categories as $category)
-										<option value="{{ $category->id }}">{{ $category->name }}</option>
-										@endforeach
-									</select>
-									
-									<span id="span_category_id_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Brand </label>
-									
-									<select class="form-control" id="brand_id_update"  name ="brand_id">
-										@foreach($brands as $brand)
-										<option value="{{ $brand->id }}">{{ $brand->name }}</option>
-										@endforeach
-									</select>
-									
-									<span id="span_brand_id_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Warranty Time (Month)</label>
-									<input type="text" class="form-control" id="warranty_time_update"  name ="warranty_time" placeholder="Warranty Time">
-									<span id="span_warranty_time_update"></span>
-								</div>
-								
-							</div>
-							<div style="float: left; width:49%; margin-left: 2%;">
-								<h4 style="margin-bottom: 5%;  ">Thông số kĩ thuật :</h4>
-								<div class="form-group">
-									<label for="">* Ram (GB)</label>
-									<input type="text" class="form-control" id="ram_update"  name ="ram" placeholder="Ram">
-									<span id="span_ram_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Weight (Gram)</label>
-									<input type="text" class="form-control" id="weight_update"  name ="weight" placeholder="Weight">
-									<span id="span_weight_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Screen Size (inch)</label>
-									<input type="text" class="form-control" id="screen_size_update"  name ="screen_size" placeholder="Screen Size">
-									<span id="span_screen_size_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Pin (mAh)</label>
-									<input type="text" class="form-control" id="pin_update"  name ="pin" placeholder="Pin">
-									<span id="span_pin_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Front Camera (Megapixel)</label>
-									<input type="text" class="form-control" id="front_camera_update"  name ="front_camera" placeholder="Front Camera">
-									<span id="span_front_camera_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Rear Camera (Megapixel)</label>
-									<input type="text" class="form-control" id="rear_camera_update"  name ="rear_camera" placeholder="Rear Camera">
-									<span id="span_rear_camera_update"></span>
-								</div>
-								<div class="form-group">
-									<label for="">* Operating System (Example: IOS 12.4)</label>
-									<input type="text" class="form-control" id="operating_system_update"  name ="operating_system" placeholder="Operating System">
-									<span id="span_operating_system_update"></span>
+								<div style="float: left; width:49%; margin-left: 2%;">
+									<h4 style="margin-bottom: 5%;  ">Thông số kĩ thuật :</h4>
+									<div class="form-group">
+										<label for="">* Ram (GB)</label>
+										<input type="text" class="form-control" id="ram_update"  name ="ram" placeholder="Ram">
+										<span id="span_ram_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Weight (Gram)</label>
+										<input type="text" class="form-control" id="weight_update"  name ="weight" placeholder="Weight">
+										<span id="span_weight_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Screen Size (inch)</label>
+										<input type="text" class="form-control" id="screen_size_update"  name ="screen_size" placeholder="Screen Size">
+										<span id="span_screen_size_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Pin (mAh)</label>
+										<input type="text" class="form-control" id="pin_update"  name ="pin" placeholder="Pin">
+										<span id="span_pin_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Front Camera (Megapixel)</label>
+										<input type="text" class="form-control" id="front_camera_update"  name ="front_camera" placeholder="Front Camera">
+										<span id="span_front_camera_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Rear Camera (Megapixel)</label>
+										<input type="text" class="form-control" id="rear_camera_update"  name ="rear_camera" placeholder="Rear Camera">
+										<span id="span_rear_camera_update"></span>
+									</div>
+									<div class="form-group">
+										<label for="">* Operating System (Example: IOS 12.4)</label>
+										<input type="text" class="form-control" id="operating_system_update"  name ="operating_system" placeholder="Operating System">
+										<span id="span_operating_system_update"></span>
+									</div>
+
 								</div>
 
-							</div>
+						
 
-					
-
-					</div>
-					<div class="clear"></div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit"  class="btn btn-primary">Save</button>
-					</div>
-				</form>
+						</div>
+						<div class="clear"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit"  class="btn btn-primary">Save</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
+	@endif
 </div>
 {{-- modal show  --}}
-	<div class="modal fade" id="modal-show">
+	@if(Auth::user()->can('show_product'))
+		<div class="modal fade" id="modal-show">
 		<div style="width:80%;" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="padding-bottom: 0px;">
@@ -396,9 +361,11 @@
 					</div>
 			</div>
 		</div>
-	</div>
+		</div>
+	@endif
 {{-- modal images --}}
-<div class="modal fade" id="modal-images">
+	@if(Auth::user()->can('update_product'))
+		<div class="modal fade" id="modal-images">
 		<div style="width:80%;" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="padding-bottom: 0px;">
@@ -430,10 +397,11 @@
 					</div>
 			</div>
 		</div>
-	</div>
-
+		</div>
+	@endif
 {{-- modal detail_products --}}
-<div class="modal fade" id="modal-detail_products">
+	@if(Auth::user()->can('show_detail_product'))
+		<div class="modal fade" id="modal-detail_products">
 		<div style="width:80%;" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="padding-bottom: 0px;">
@@ -443,9 +411,12 @@
 					
 
 				</div>
+				@if(Auth::user()->can('add_detail_product'))
 				<a style="margin-left: 5%;margin-top: 3%; " id="add_product_detal" href="javascript:;" class="btn btn-success">
 						Add Details
 					</a>
+				@endif
+				<h5 style="margin-left: 5%;">Detail Product</h5>
 				<div class="modal-body">
 					
 					<div style="margin: auto; text-align: center; width: 90%;">
@@ -471,9 +442,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	{{-- modal detail_products --}}
-<div class="modal fade" id="modal-add_detail_products">
+		</div>
+	@endif
+	{{-- modal add_detail_products --}}
+	@if(Auth::user()->can('add_detail_product'))
+	<div class="modal fade" id="modal-add_detail_products">
 		<div style="width: 70%;" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="padding-bottom: 0px;">
@@ -501,7 +474,11 @@
 							</div>	
 							<div class="form-group">
 								<label for="">* Memory</label>
-								<input class="form-control" type="text" id="memory_add" name="memory" placeholder="Memory">
+								<select class="form-control" type="text" id="memory_add" name="memory" >
+									@foreach($memories as $memory)
+									<option value="{{ $memory->id }}">{{ $memory->name }}</option>
+									@endforeach
+								</select>
 								<span id="span_memory_add"></span>
 							</div>	
 							<div class="form-group">
@@ -544,85 +521,93 @@
 			</div>
 		</div>
 	</div>
+	@endif
 
 	{{-- modal update detail_products --}}
-<div class="modal fade" id="modal-update_detail_products">
-		<div style="width: 70%;" class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header" style="padding-bottom: 0px;">
-					
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4  >Cập nhật chi tiết sản phẩm sản phẩm :</h4>
-					
-
-				</div>
-				<form id="form_update_detail_product" method="POST" role="form">
-					@csrf
-				<div class="modal-body">
-					
-					<div style="margin-left:2%; float: left;  width: 45%;">	
-
-							<input type="hidden" name="product_id" readonly class="form-control" id="product_id_update">
-							<input type="hidden"  readonly class="form-control" id="detail_product_id_update">
-							<div class="form-group">
-								<label for="">* Color</label>
-								<select id="color_id_update" name="color_id" class="form-control">
-									@foreach($colors as $color)
-									<option value="{{ $color->id }}">{{ $color->name }}</option>
-									@endforeach
-								</select>
-								<span id="span_color_id_update"></span>
-							</div>	
-							<div class="form-group">
-								<label for="">* Memory</label>
-								<input class="form-control" type="text" id="memory_update" name="memory" placeholder="Memory">
-								<span id="span_memory_update"></span>
-							</div>	
-							<div class="form-group">
-								<label for="">* Price</label>
-								<input class="form-control" name="price" type="number" id="price_update" placeholder="Price">
-								<span id="span_price_update"></span>
-							</div>	
+	@if(Auth::user()->can('update_detail_product'))
+			<div class="modal fade" id="modal-update_detail_products">
+					<div style="width: 70%;" class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="padding-bottom: 0px;">
+								
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4  >Cập nhật chi tiết sản phẩm sản phẩm :</h4>
 								
 
-					</div>
-					<div style="margin-left:2%; float: left;  width: 45%;">	
-						<div class="form-group">
-								<label for="">* Sale price</label>
-								<input class="form-control" type="number" name="sale_price" id="sale_price_update"placeholder="Sale price">
-								<span id="span_sale_price_update"></span>
 							</div>
-							<div class="form-group">
-								<label for="">* Quantity</label>
-								<input class="form-control" type="number" name="quantity" id="quantity_update"placeholder="Quantity">
-								<span id="span_quantity_update"></span>
+							<form id="form_update_detail_product" method="POST" role="form">
+								@csrf
+							<div class="modal-body">
+								
+								<div style="margin-left:2%; float: left;  width: 45%;">	
+
+										<input type="hidden" name="product_id" readonly class="form-control" id="product_id_update">
+										<input type="hidden"  readonly class="form-control" id="detail_product_id_update">
+										<div class="form-group">
+											<label for="">* Color</label>
+											<select id="color_id_update" name="color_id" class="form-control">
+												@foreach($colors as $color)
+												<option value="{{ $color->id }}">{{ $color->name }}</option>
+												@endforeach
+											</select>
+											<span id="span_color_id_update"></span>
+										</div>	
+										<div class="form-group">
+											<label for="">* Memory</label>
+											<select class="form-control" type="text" id="memory_update" name="memory" placeholder="Memory">
+											@foreach($memories as $memory)
+												<option value="{{ $memory->id }}">{{ $memory->name }}</option>
+												@endforeach
+											</select>
+											<span id="span_memory_update"></span>
+										</div>	
+										<div class="form-group">
+											<label for="">* Price</label>
+											<input class="form-control" name="price" type="number" id="price_update" placeholder="Price">
+											<span id="span_price_update"></span>
+										</div>	
+											
+
+								</div>
+								<div style="margin-left:2%; float: left;  width: 45%;">	
+									<div class="form-group">
+											<label for="">* Sale price</label>
+											<input class="form-control" type="number" name="sale_price" id="sale_price_update"placeholder="Sale price">
+											<span id="span_sale_price_update"></span>
+										</div>
+										<div class="form-group">
+											<label for="">* Quantity</label>
+											<input class="form-control" type="number" name="quantity" id="quantity_update"placeholder="Quantity">
+											<span id="span_quantity_update"></span>
+										</div>
+										<div class="form-group">
+											<label for="">*  Branch</label>
+											<select id="branch_id_update" name="branch_id" class="form-control">
+												@foreach($branches as $branch)
+												<option value="{{ $branch->id }}">{{ $branch->name }}</option>
+												@endforeach
+											</select>
+											<span id="span_branch_id_update"></span>
+										</div>
+								</div>
 							</div>
-							<div class="form-group">
-								<label for="">*  Branch</label>
-								<select id="branch_id_update" name="branch_id" class="form-control">
-									@foreach($branches as $branch)
-									<option value="{{ $branch->id }}">{{ $branch->name }}</option>
-									@endforeach
-								</select>
-								<span id="span_branch_id_update"></span>
-							</div>
+								<div class="clear"></div>
+								<div class="modal-footer">
+										<button type="button" id="close-detail-product-update" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit"  class="btn btn-primary">Save</button>
+								
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
-					<div class="clear"></div>
-					<div class="modal-footer">
-							<button type="button" id="close-detail-product-update" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="submit"  class="btn btn-primary">Save</button>
-					
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+	@endif
 
 
 
 {{-- modal REVIEW --}}
-<div class="modal fade" id="modal-reviews">
+@if(Auth::user()->can('show_review'))
+	<div class="modal fade" id="modal-reviews">
 		<div style="width:80%;" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="padding-bottom: 0px;">
@@ -632,9 +617,12 @@
 					
 
 				</div>
+				@if(Auth::user()->can('crud_review'))
 				<a style="margin-left: 5%;margin-top: 3%; " id="add_review" href="javascript:;" class="btn btn-success">
 						Add Review
 					</a>
+				@endif
+				<h5 style="margin-left: 5%;">Review</h5>
 				<div class="modal-body">
 					
 					<div style="margin: auto; width: 90%;">
@@ -660,8 +648,10 @@
 			</div>
 		</div>
 	</div>
+@endif
 
 	{{-- modal add reviews --}}
+	@if(Auth::user()->can('crud_review'))
 		<div class="modal fade"  id="modal-add_reviews">
 			<div style="width: 70%;" class="modal-dialog">
 				<div class="modal-content">
@@ -708,8 +698,10 @@
 			</div>
 		</div>
 		</div>
+	@endif
 
 		{{-- modal show reviews --}}
+		@if(Auth::user()->can('show_review'))
 		<div class="modal fade"  id="modal-show_reviews">
 			<div style="width: 70%;" class="modal-dialog">
 				<div class="modal-content">
@@ -737,15 +729,17 @@
 						<div class="clear"></div>
 						<div class="modal-footer">
 							<button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="submit"  class="btn btn-primary">Add</button>
+							
 						</div>
 					
 				
 			</div>
 		</div>
 		</div>
+		@endif
 
 {{-- modal edit reviews --}}
+@if(Auth::user()->can('crud_review'))
 		<div class="modal fade"  id="modal-update_reviews">
 			<div style="width: 70%;" class="modal-dialog">
 				<div class="modal-content">
@@ -794,6 +788,7 @@
 			</div>
 		</div>
 		</div>
+		@endif
 @endsection
 @section('js')
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script> --}}

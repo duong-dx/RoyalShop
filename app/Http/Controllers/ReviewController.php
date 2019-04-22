@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Review;
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReviewRequest;
 
 class ReviewController extends Controller
 {
+    public function __construct()
+    {
+         $this->middleware('auth');
+
+        $this->middleware('permission:show_review', ['only' => ['index', 'show']]);
+        $this->middleware('permission:crud_review', ['only' => ['store', 'edit', 'update', 'destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -112,10 +120,17 @@ class ReviewController extends Controller
         ->get();
 
         return datatables()->of($reviews)->addColumn('action',function( $reviews){
-            return '
-            <button  type="button" class="btn btn-info btn-show-reviews" data-id="'.$reviews->id.'"><i class="far fa-eye"></i></button>
+            $data='';
+            if (Auth::user()->can('show_review')) {
+                $data.= '<button  type="button" class="btn btn-info btn-show-reviews" data-id="'.$reviews->id.'"><i class="far fa-eye"></i></button>';
+            }
+            if(Auth::user()->can('crud_review')){
+                $data.= '
             <button type="button" class="btn  btn-warning btn-edit-review" data-id="'.$reviews->id.'"><i class="far fa-edit"></i></button>
             <button type="button" class="btn btn-danger  btn-delete-review" data-id="'.$reviews->id.'"><i class="far fa-trash-alt"></i></button>';
+             }
+            return $data;
+            
         })
         ->editColumn('product_name',function($reviews){
             return  ''.$reviews->product_name.'';

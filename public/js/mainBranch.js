@@ -11,7 +11,6 @@ $(function(){
         ajax:'/admin/getBranches',
         columns:[
         	{ data: 'id', name: 'id' },
-            { data: 'name', name: 'name' },
             { data: 'address', name: 'address' },
             { data: 'mobile', name: 'mobile' },
             { data: 'action', name: 'action' },
@@ -40,6 +39,11 @@ $(function(){
                 toastr.success('Add success!');
                 $('#modal-add').modal('hide');
                 $('#branches-table').DataTable().ajax.reload();
+                
+                $('#name_add').val('');
+                $('#address_add').val('');
+                $('#mobile_add').val('');
+              
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -112,18 +116,43 @@ $(function(){
                 type:'delete',
                 url:'/admin/branches/'+id,
                 success : function(reponse){
-            
-                    $('#branches-table').DataTable().ajax.reload();
+                     if(reponse.error==true){
+                            toastr.error(reponse.message);
+                        }
+                        else{
+                             $('#branches-table').DataTable().ajax.reload();
                     toastr.success('Delete success!');
+                    swal("Poof! Your imaginary file has been deleted!", {
+                    icon: "success",
+                });
+                        }
+                   
             }
 
        })
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+                
             } else {
                 swal("Bạn đã hủy chức năng xóa!");
             }
         })
     })
+    /*#######################################################################################*/
+    $(document).on('click','.btn-list_detail_products',function(){
+    $('#modal-list_products').modal('show');
+    var id = $(this).data('id');
+    $('#list_products-table').DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        ajax:'/admin/getProductInBranch/'+id,
+        columns:[
+            { data: 'product_name', name: 'product_name' },
+            { data: 'memory', name: 'memory' },
+            { data: 'color_name', name: 'color_name' },
+            { data: 'sale_price', name: 'sale_price' },
+            { data: 'quantity', name: 'quantity' },
+        ]
+    });
+
+})
 });

@@ -13,13 +13,12 @@ class CreateDetailOdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('detail_oders', function (Blueprint $table) {
+        Schema::create('detail_orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id')->unsigned();
+            $table->integer('order_id')->unsigned();
             $table->integer('detail_product_id')->unsigned();
-            $table->integer('price')->unsigned();
             $table->integer('sale_price')->unsigned();
-            $table->integer('quantity')->unsigned();
+            $table->integer('quantity_buy')->unsigned();
             $table->integer('total')->unsigned();
             $table->timestamps();
         });
@@ -32,6 +31,6 @@ class CreateDetailOdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detail_oders');
+        Schema::dropIfExists('detail_orders');
     }
 }

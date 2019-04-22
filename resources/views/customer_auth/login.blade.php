@@ -62,6 +62,7 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+                                <a class="btn-link btn" href="/customer/login/facebook">Login with FB</a>
                             </div>
                         </div>
                     </form>

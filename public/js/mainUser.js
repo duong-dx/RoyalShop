@@ -61,6 +61,16 @@ $(function(){
                 toastr.success('Add success!');
                 $('#modal-add').modal('hide')
                 $('#users-table').DataTable().ajax.reload();
+
+                $('.img-thumbnail').attr('src','http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
+                $('#thumbnail_add').val('')
+                $('#name_add').val('')
+                $('#birthday_add').val('')
+                $('#address_add').val('')
+                $('#mobile_add').val('')
+                $('#email_add').val('')
+                $('#password_add').val('')
+               
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -193,19 +203,61 @@ $(function(){
                     type:'delete',
                     url:'/admin/users/'+id,
                     success : function(reponse){
-            toastr.success('Delete success!');
-            $('#users-table').DataTable().ajax.reload();
+                         if(reponse.error==true){
+                            toastr.error(reponse.message);
+                        }
+                        else{
+                             toastr.success('Delete success!');
+                            $('#users-table').DataTable().ajax.reload();
+                            swal("Poof! Your imaginary file has been deleted!", {
+                                    icon: "success",
+                                });
+                        }
+           
         }
 
        })
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+                
             } else {
                 swal("Bạn đã hủy chức năng xóa!");
             }
         })
     });
+    /*#########################################################################################*/
+    $(document).on('click','.btn-role',function(){
+        $('#modal-role').modal('show');
+        var id = $(this).data('id');
+        $('#user_id_role').val(id);
+        $.ajax({
+            type:'get',
+            url:'/admin/getRoleUser/'+id,
+            success: function(reponse){
+                console.log(reponse);
+                $('#role_id').val(reponse.role_id);
+            }
+        })
+
+    })
+    $('#form-role').submit(function(e){
+        e.preventDefault();
+        var data = $('#form-role').serialize();
+        
+        $.ajax({
+            type:'post',
+            url:'/admin/addRoleUser',
+            data:data,
+            success: function(reponse){
+                 toastr.success('Update role success !');  
+                $('#modal-role').modal('hide');
+            },
+            error: function(jq, status, throwE){
+                jQuery.each(jq.responseJSON.errors,function(key,value){
+                   toastr.error(value);  
+                })
+            }
+        })
+
+    })
 
 
     function readURL(input) {

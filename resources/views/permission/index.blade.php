@@ -30,7 +30,7 @@
 						@csrf
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Add Branch</h4>
+							<h4 class="modal-title">Add Permission</h4>
 						</div>
 						
 						<div class="modal-body">
@@ -72,7 +72,7 @@
 							
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Edit category</h4>
+							<h4 class="modal-title">Edit Permission</h4>
 						</div>
 						
 						<div class="modal-body">
@@ -82,14 +82,14 @@
 								<span id="span_name_update"></span>
 							</div>
 							<div class="form-group">
-								<label for="">* Address</label>
-								<input type="text" class="form-control" id="address_update"  name ="address" placeholder="Address">
-								<span id="span_address_update"></span>
+								<label for="">* Display Name</label>
+								<input type="text" class="form-control" id="display_name_update"  name ="display_name" placeholder="Display Name">
+								<span id="span_display_name_update"></span>
 							</div>
 							<div class="form-group">
-								<label for="">* Mobile</label>
-								<input type="text" class="form-control" id="mobile_update"  name ="mobile" placeholder="Mobile">
-								<span id="span_mobile_update"></span>
+								<label for="">* Description</label>
+								<input type="text" class="form-control" id="description_update"  name ="description" placeholder="Description">
+								<span id="span_description_update"></span>
 							</div>
 						</div>
 						<div class="modal-footer">

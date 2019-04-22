@@ -17,9 +17,7 @@ $(function(){
             ]
 	});
     $('.btn-add').on('click',function(){
-        $('#name_add').val('');
-        $('#display_name_add').val('');
-        $('#description_add').val('');
+       
 
         $('#modal-add').modal('show');
         
@@ -44,6 +42,10 @@ $(function(){
                 toastr.success('Add success!');
                 $('#modal-add').modal('hide');
                 $('#permissions-table').DataTable().ajax.reload();
+
+                 $('#name_add').val('');
+                $('#display_name_add').val('');
+                $('#description_add').val('');
             },
             error: function(jq, status , throwE){
                 console.log(jq)
@@ -59,17 +61,17 @@ $(function(){
 
         
          $('#span_name_update').html('');
-        $('#span_mobile_update').html('');
-        $('#span_address_update').html('');
+        $('#span_display_name_update').html('');
+        $('#span_description_update').html('');
         var id = $(this).data('id');
         $.ajax({
             type:'get',
-            url:'/admin/branches/'+id+'/edit',
+            url:'/admin/permissions/'+id+'/edit',
             success: function(reponse){
                 $('#id_update').val(reponse.id);
                 $('#name_update').val(reponse.name);
-                $('#mobile_update').val(reponse.mobile);
-                $('#address_update').val(reponse.address);
+                $('#display_name_update').val(reponse.display_name);
+                $('#description_update').val(reponse.description);
             }
         })
     });
@@ -77,17 +79,17 @@ $(function(){
         e.preventDefault();
         var id = $('#id_update').val();
         var data = $('#form-update').serialize();
-        $('#span_name_update').html('');
-        $('#span_mobile_update').html('');
-        $('#span_address_update').html('');
+         $('#span_name_update').html('');
+        $('#span_display_name_update').html('');
+        $('#span_description_update').html('');
         $.ajax({
             type:'put',
-            url:'/admin/branches/'+id,
+            url:'/admin/permissions/'+id,
             data:data,
             success:function(reponse){
                     toastr.success('Update success !');
                     $('#modal-update').modal('hide');
-                   $('#branches-table').DataTable().ajax.reload(); 
+                   $('#permissions-table').DataTable().ajax.reload(); 
             },
             error:function(jq,status,throwE){
                 jQuery.each(jq.responseJSON.errors,function(key,value){
@@ -114,17 +116,24 @@ $(function(){
             $.ajax({ 
 
                 type:'delete',
-                url:'/admin/branches/'+id,
+                url:'/admin/permissions/'+id,
                 success : function(reponse){
-            
-                    $('#branches-table').DataTable().ajax.reload();
+                     if(reponse.error==true){
+                            toastr.error(reponse.message);
+                        }
+                        else{
+                            $('#permissions-table').DataTable().ajax.reload();
                     toastr.success('Delete success!');
+                    swal("Poof! Your imaginary file has been deleted!", {
+                    icon: "success",
+                }); 
+                        }
+            
+                    
             }
 
        })
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+                
             } else {
                 swal("Bạn đã hủy chức năng xóa!");
             }
