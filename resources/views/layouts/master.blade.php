@@ -113,6 +113,14 @@
                    </li>
                    <li><a href="/admin/profile"><i class="fas fa-user-circle"></i></i>&nbsp&nbsp&nbsp Profile</a>
                    </li>
+                   <li><a><i class="fas fa-chart-line"></i>&nbsp&nbsp&nbsp Statistical <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/admin/statistical">Thống kê sơ bộ</a></li>
+                      <li><a href="/admin/orders">Orders</a></li>
+                      <li><a href="/admin/statuses">Statuses</a></li>
+                    </ul>
+                   </li>
+                   
                 
                 </ul>
               </div>

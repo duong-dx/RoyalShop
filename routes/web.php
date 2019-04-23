@@ -188,8 +188,8 @@ Route::prefix('admin')->group(function(){
 
           });
 
-          //thống kê sơ bộ 
-          // Route::get('statistical','StatisticalController');
+          // thống kê sơ bộ 
+          Route::get('statistical','StatisticalController@index');
           
      });
 });
